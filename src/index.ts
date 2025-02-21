@@ -5,7 +5,7 @@ import { showRouter } from './routes/show.route';
 import { downloadRoute } from './routes/download.route';
 import {mailRouter} from "./routes/mail.route"
 import path from 'path';
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 const app = express();
 app.use(express.json());
 app.set('view engine', 'ejs');

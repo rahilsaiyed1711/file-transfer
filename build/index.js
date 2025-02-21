@@ -10,7 +10,7 @@ const show_route_1 = require("./routes/show.route");
 const download_route_1 = require("./routes/download.route");
 const mail_route_1 = require("./routes/mail.route");
 const path_1 = __importDefault(require("path"));
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.set('view engine', 'ejs');
