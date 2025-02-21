@@ -1,5 +1,6 @@
 import { Schema, model } from 'mongoose';
-import { IFile } from '../interfaces/user.interface';
+import { IFile, IMail } from '../interfaces/user.interface';
+
 
 const fileSchema = new Schema<IFile>(
   {

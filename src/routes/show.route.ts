@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import { show } from '../controller/files.controller';
+import { showFile } from '../controller/files.controller';
 const showRouter = Router();
 
-showRouter.get('/:uuid', show);
+showRouter.get('/:uuid', showFile);
 
 export { showRouter };

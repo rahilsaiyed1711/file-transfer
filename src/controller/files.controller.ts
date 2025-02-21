@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 import { upload } from '../config/multer';
 import { File } from '../models/file.model';
 import { v4 as uuidv4 } from 'uuid';
-import { log } from 'console';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -31,18 +30,30 @@ const HandleFile = async (req: Request, res: Response): Promise<any> => {
   });
 };
 
-const show = async (req: Request, res: Response): Promise<any> => {
+const showFile = async (req: Request, res: Response): Promise<any> => {
   try {
     const file = await File.findOne({ uuid: req.params.uuid });
     if (!file) return res.render('download', { err: 'link expired' });
-    return res.render("download",{
+    return res.render('download', {
       uuid: file.uuid,
       fileName: file.fileName,
       fileSize: file.size,
-      download: `${process.env.APP_BASE_URL}/files/download/${file.uuid}`
-    })
+      downloadLink: `${process.env.APP_BASE_URL}/files/download/${file.uuid}`,
+    });
   } catch (error) {
     return res.render('download', { err: 'something wen wrong' });
   }
 };
-export { HandleFile, show };
+
+const downloadFile = async (req: Request, res: Response):Promise<any> => {
+    const file = await File.findOne({ uuid: req.params.uuid });
+   // Link expired
+   if(!file) {
+        return res.render('download', { error: 'Link has been expired.'});
+   } 
+   const response = await file.save();
+   const filePath = `${file.path}`;
+   res.download(filePath);
+};
+
+export { HandleFile, showFile, downloadFile };

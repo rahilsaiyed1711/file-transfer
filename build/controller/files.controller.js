@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.show = exports.HandleFile = void 0;
+exports.downloadFile = exports.showFile = exports.HandleFile = void 0;
 const multer_1 = require("../config/multer");
 const file_model_1 = require("../models/file.model");
 const uuid_1 = require("uuid");
@@ -41,20 +41,31 @@ const HandleFile = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }));
 });
 exports.HandleFile = HandleFile;
-const show = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const showFile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const file = yield file_model_1.File.findOne({ uuid: req.params.uuid });
         if (!file)
             return res.render('download', { err: 'link expired' });
-        return res.render("download", {
+        return res.render('download', {
             uuid: file.uuid,
             fileName: file.fileName,
             fileSize: file.size,
-            download: `${process.env.APP_BASE_URL}/files/download/${file.uuid}`
+            downloadLink: `${process.env.APP_BASE_URL}/files/download/${file.uuid}`,
         });
     }
     catch (error) {
         return res.render('download', { err: 'something wen wrong' });
     }
 });
-exports.show = show;
+exports.showFile = showFile;
+const downloadFile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const file = yield file_model_1.File.findOne({ uuid: req.params.uuid });
+    // Link expired
+    if (!file) {
+        return res.render('download', { error: 'Link has been expired.' });
+    }
+    const response = yield file.save();
+    const filePath = `${file.path}`;
+    res.download(filePath);
+});
+exports.downloadFile = downloadFile;
