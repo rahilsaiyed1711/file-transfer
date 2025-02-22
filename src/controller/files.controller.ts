@@ -45,6 +45,7 @@ const showFile = async (req: Request, res: Response): Promise<any> => {
   }
 };
 
+
 const downloadFile = async (req: Request, res: Response):Promise<any> => {
     const file = await File.findOne({ uuid: req.params.uuid });
    // Link expired
