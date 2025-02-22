@@ -9,7 +9,6 @@ import dotenv from "dotenv";
 dotenv.config();
 const PORT = process.env.PORT || 3000;
 const app = express();
-app.use(cors(corsOptions))
 app.use(express.json());
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '../views'));
