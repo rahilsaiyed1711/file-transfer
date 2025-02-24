@@ -5,11 +5,17 @@ import { showRouter } from './routes/show.route';
 import { downloadRoute } from './routes/download.route';
 import {mailRouter} from "./routes/mail.route"
 import path from 'path';
-import dotenv from "dotenv";
+import dotenv from "dotenv"
+import cors from "cors";
 dotenv.config();
 const PORT = process.env.PORT || 3000;
 const app = express();
 app.use(express.json());
+const corsOption = {
+  origin : process.env.ALLOWED_CLIENTS?.split(",")
+}
+app.use(cors(corsOption))
+
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '../views'));
 app.use(express.static('../public'));
